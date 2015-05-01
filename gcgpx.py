@@ -6,6 +6,13 @@ import os
 import time
 import xml.dom.minidom as minidom
 import random
+import sys
+
+
+defaultpath = 'H:\\gpx\\27-4-15'
+filemask = 'GC*.GPX'
+gpxage = 24*3600
+maxdelay = 10.0
 
 cipher = {}
 for i in xrange(13):
@@ -15,14 +22,15 @@ for i in xrange(13):
 	cipher[chr(i+110)] = chr(i+97)
 cipherre = re.compile('|'.join(cipher.keys()))
 
-path = 'H:\gpx\\27-4-15'
-filemask = 'GC*.GPX'
-gpxage = 48*3600
-maxdelay = 10.0
+if len(sys.argv)>1:
+	path = sys.argv[1]
+else:
+	path = defaultpath
 
-print os.path.join(path,filemask)
+searchpath = os.path.join(path,filemask)	
+print 'Searching '+searchpath
 
-files = [filename for filename in glob.glob(os.path.join(path,filemask)) if time.time() - os.stat(filename).st_ctime < gpxage]
+files = [filename for filename in glob.glob(searchpath) if time.time() - os.stat(filename).st_ctime < gpxage]
 
 print 'Found '+str(len(files))+' gpx files'
 
@@ -81,7 +89,7 @@ for filename in files:
 	elif ldescnode is not None:
 		ldescnode.data = longdescobj.text
 	
-	gpxfile = open(os.path.join(path,'out',geocode+'.gpx'),'wb')
+	gpxfile = open(os.path.join(path,geocode+'.gpx'),'wb')
 	gpxfile.write(gpxdom.toxml('utf-8'))
 	gpxfile.close()
 	
