@@ -15,7 +15,7 @@ gpxage = 24*3600
 maxdelay = 10.0
 
 cipher = {}
-for i in xrange(13):
+for i in range(13):
 	cipher[chr(i+65)] = chr(i+78)
 	cipher[chr(i+78)] = chr(i+65)
 	cipher[chr(i+97)] = chr(i+110)
@@ -64,7 +64,7 @@ for filename in files:
 		hintnode = None
 	
 	geopage = requests.get('http://www.geocaching.com/geocache/'+geocode)
-	geohtml = bs4.BeautifulSoup(geopage.text)
+	geohtml = bs4.BeautifulSoup(geopage.text, "html.parser")
 
 	hintobj = geohtml.find("div",id="div_hint")
 	if hintobj is None:
