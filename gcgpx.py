@@ -30,7 +30,7 @@ else:
 searchpath = os.path.join(path,filemask)	
 print 'Searching '+searchpath
 
-files = [filename for filename in glob.glob(searchpath) if time.time() - os.stat(filename).st_ctime < gpxage]
+files = [filename for filename in glob.glob(searchpath) if time.time() - os.stat(filename).st_mtime < gpxage]
 
 print 'Found '+str(len(files))+' gpx files'
 
